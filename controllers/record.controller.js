@@ -1,33 +1,32 @@
-// controllers/recordController.js
 const Record = require('../models/Record');
 
-// Add a new record
-exports.addRecord = async (req, res) => {
-    const { breed, rabbitName, crossedDate, endDate, deliveryDate, kindled } = req.body;
+// Function to add a new record
+const addRecord = async (req, res) => {
     try {
-        const record = new Record({
-            userId: req.userId,
-            breed,
-            rabbitName,
-            crossedDate,
-            endDate,
-            deliveryDate,
-            kindled
+        const newRecord = new Record({
+            userId: req.user.id, // Assuming user ID comes from the auth middleware
+            breed: req.body.breed,
+            rabbitName: req.body.rabbitName,
+            crossedDate: req.body.crossedDate,
+            endDate: req.body.endDate,
+            deliveryDate: req.body.deliveryDate,
+            kindled: req.body.kindled
         });
-
-        await record.save();
-        res.status(201).json({ message: 'Record added successfully' });
+        await newRecord.save();
+        res.status(201).json(newRecord);
     } catch (error) {
-        res.status(500).json({ message: 'Server error' });
+        res.status(500).json({ message: 'Error adding record', error });
     }
 };
 
-// Get all records for the user
-exports.getRecords = async (req, res) => {
+// Function to get all records
+const getRecords = async (req, res) => {
     try {
-        const records = await Record.find({ userId: req.userId });
+        const records = await Record.find({ userId: req.user.id });
         res.status(200).json(records);
     } catch (error) {
-        res.status(500).json({ message: 'Server error' });
+        res.status(500).json({ message: 'Error retrieving records', error });
     }
 };
+
+module.exports = { addRecord, getRecords };

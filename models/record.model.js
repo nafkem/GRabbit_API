@@ -1,6 +1,3 @@
-
-
-// models/Record.js
 const mongoose = require('mongoose');
 
 const recordSchema = new mongoose.Schema({

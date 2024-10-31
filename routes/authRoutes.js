@@ -6,6 +6,10 @@ const router = express.Router();
 router.post('/signup', (req, res) => {
     res.send('User signed up!');
 });
+router.get('/signin', (req, res) => {
+    res.send('User signed in!');
+});
+
 
 // Export the router
 module.exports = router;
